@@ -1,0 +1,39 @@
+<div #selectBox class="px-[10px] py-[8px] rounded-[8px] flex items-center bg-white border-[1px] h-[36px] relative"
+     DropDown
+     [disabled]="disabled"
+     [menu]="menuElement"
+     position="bottom-start"
+     [ngClass]="{
+     'bg-[#F9FAFB] cursor-not-allowed': disabled || readOnly,
+     'border-[#E5E7EB] cursor-pointer': !invalid && !focused,
+     'ring-2 ring-blue-200 border-blue-500' : focused && !invalid,
+     'ring-2 ring-red-200 border-red-500': touched && invalid
+     }">
+  <input (blur)="onBlur()" (focus)="onFocus()" [readOnly]="true" class="bg-transparent absolute h-full inset-0 outline-0 border-transparent cursor-pointer" />
+  <div  class="flex-grow outline-0 disabled:bg-[#F9FAFB] disabled:cursor-not-allowed"
+        [ngClass]="{'text-[#667085]': selected,
+  'text-gray-400': !selected,
+  'text-[14px]': !template}">
+    @if(selected) {
+      @if(template) {
+        <ng-container *ngTemplateOutlet="$any(displayTemplate); context: context"></ng-container>
+      } @else {
+        {{displayLabel}}
+      }
+    } @else {
+      {{placeholder}}
+    }
+  </div>
+  @if(displayLabel.length > 0 && allowClear) {
+    <i class="ri-close-circle-fill leading-none" (click)="$event.stopImmediatePropagation();clearSelected()"></i>
+  }
+  <i class="ri-arrow-down-s-line leading-none dropdown-menu-icon" [ngClass]="{'rotate-180': focused}"></i>
+</div>
+
+<div #menuElement DropDownItem class="py-[4px]">
+  <div [ngStyle]="{minWidth: selectBox.clientWidth+'px'}"
+       class="border border-gray-200 rounded-[8px] max-h-[500px] flex flex-col divide-y bg-white shadow overflow-auto">
+    <ng-content select="sc-select-search"></ng-content>
+    <ng-content select="sc-select-option"></ng-content>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+<div class="w-full divide-y grow h-full overflow-auto">
+  @if(template) {
+    <div (click)="select()" class="w-full hover:bg-gray-100" [ngClass]="{'bg-gray-100': selected}">
+      <ng-content></ng-content>
+    </div>
+  } @else {
+    <div class="px-[8px] py-[6px] cursor-pointer hover:bg-gray-100 flex items-center space-x-[8px]"
+         [ngClass]="{'bg-gray-100': selected}"
+         (click)="select()">
+     <span class="text-[14px] leading-[20px] text-[#374151]">{{label}}</span>
+    </div>
+  }
+</div>
