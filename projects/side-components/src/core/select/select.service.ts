@@ -6,10 +6,11 @@ import {ReplaySubject} from "rxjs";
 })
 export class SelectService {
   selected = new ReplaySubject<any>();
+  incoming = new ReplaySubject<any>();
   templateMode = new ReplaySubject<boolean>();
   clearSearch = new ReplaySubject<boolean>();
 
-  select = (value: any) => {
-    this.selected.next(value);
-  }
+  // select = (value: any) => {
+  //   this.selected.next(value);
+  // }
 }

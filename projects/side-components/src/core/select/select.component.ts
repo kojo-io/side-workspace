@@ -35,6 +35,8 @@ export class SelectComponent implements OnInit, ControlValueAccessor{
   @Input() touched: boolean = false;
   @Input() template: boolean = false;
   @Input() displayTemplate?: TemplateRef<any>;
+  @Input() suffixTemplate?: TemplateRef<any>;
+  @Input() prefixTemplate?: TemplateRef<any>;
   context: any;
 
   displayLabel = '';
@@ -54,14 +56,25 @@ export class SelectComponent implements OnInit, ControlValueAccessor{
     this.service.selected
       .subscribe({
         next: (value: {value: any, label: any}) => {
-          if (value) {
+          if (value || value > -1) {
             this.displayLabel = value.label;
             this.displayValue = value.value;
             this.selected = true;
             this.onChange(value.value);
           }
         }
-    });
+      });
+
+    this.service.incoming
+      .subscribe({
+        next: (value: {value: any, label: any}) => {
+          if (value) {
+            this.displayLabel = value.label;
+            this.displayValue = value.value;
+            this.selected = true;
+          }
+        }
+      });
 
     if (this.template) {
       this.service.templateMode.next(this.template);
@@ -69,7 +82,10 @@ export class SelectComponent implements OnInit, ControlValueAccessor{
   }
 
   clearSelected(): void {
-    this.service.select({value: null, label: ''});
+    if (this.readOnly || this.disabled) {
+      return;
+    }
+    this.service.selected.next({value: null, label: ''});
   }
 
   registerOnChange(fn: any): void {
@@ -81,6 +97,9 @@ export class SelectComponent implements OnInit, ControlValueAccessor{
   }
 
   writeValue(obj: any): void {
+    if (obj === null || obj === '') {
+      this.service.selected.next({value: null, label: ''});
+    }
   }
 
   // Method to handle focus event

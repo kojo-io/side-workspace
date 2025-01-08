@@ -17,13 +17,16 @@ export class SelectOptionComponent implements OnInit{
 
 
   select() {
-    this.service.select({value: this.value, label: this.label});
+    if (this.disabled) {
+      return;
+    }
+    this.service.selected.next({value: this.value, label: this.label});
     this.service.clearSearch.next(true);
   }
 
   ngOnInit(): void {
     if(this.selected) {
-      this.service.select({value: this.value, label: this.label});
+      this.service.incoming.next({value: this.value, label: this.label});
     }
 
     this.service.templateMode.subscribe({

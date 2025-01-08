@@ -3,7 +3,7 @@
      'border': border,
      'rounded-[5px]': border && rounded,
      'drop-shadow': border && shadow}">
-  @if(paginationPosition.includes('top') && usePagination) {
+  @if(paginationPosition.includes('top') && usePagination && showPagination) {
     <div class="flex h-auto items-center w-full px-[24px] py-[12px]"
          [ngClass]="{'justify-end': paginationPosition === 'top-right',
          'justify-start': paginationPosition === 'top-left',
@@ -25,16 +25,13 @@
     </div>
   }
   <div class="grow h-full w-full" [ngClass]="{'overflow-auto': usePagination}">
-    <div class="relative overflow-x-auto h-full">
+    <div class="relative overflow-y-auto h-full w-full">
       <table Table>
         <ng-content></ng-content>
       </table>
-      <div *ngIf="data.length === 0" class="w-full flex h-[40%] justify-center items-center">
-        <img *ngIf="image" [src]="image" class="w-32">
-      </div>
     </div>
   </div>
-  @if(paginationPosition.includes('bottom') && usePagination) {
+  @if(paginationPosition.includes('bottom') && usePagination && showPagination) {
     <div class="flex h-auto items-center w-full px-[24px] py-[12px]"
          [ngClass]="{'justify-end': paginationPosition === 'bottom-right',
          'justify-start': paginationPosition === 'bottom-left',

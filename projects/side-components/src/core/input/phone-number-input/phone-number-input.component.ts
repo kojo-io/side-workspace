@@ -33,6 +33,7 @@ export class PhoneNumberInputComponent implements OnInit, ControlValueAccessor {
   @Input() touched: boolean = false;
   @Input() defaultCountryCode = 'GH';
   @Input() dataType: 'NumberOnly' | 'FullObject' = 'FullObject';
+  @Input() disableCountrySelection = false;
   focused: boolean = false;
   rawPhoneNumber: string = '';
   formattedValue: string = '';
@@ -67,10 +68,27 @@ export class PhoneNumberInputComponent implements OnInit, ControlValueAccessor {
     this.disabled = isDisabled;
   }
 
+  // writeValue(obj: any): void {
+  //   if (obj) {
+  //     this.onInput(this.service.getNationalFormat(obj));
+  //   }
+  //   if (obj === '') {
+  //     this.model = '';
+  //   }
+  // }
+
   writeValue(obj: any): void {
-    if (obj) {
+    if (obj === null || obj === '') {
+      // Clear the internal states
+      this.model = '';
+      this.rawPhoneNumber = '';
+      this.formattedValue = '';
+    } else {
       this.onInput(this.service.getNationalFormat(obj));
     }
+
+    // Check if the value is invalid (e.g., required field)
+    this.checkInvalid();
   }
 
   checkInvalid() {

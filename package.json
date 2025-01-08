@@ -21,6 +21,7 @@
     "@angular/router": "^18.0.0",
     "@floating-ui/dom": "^1.6.11",
     "animate.css": "^4.1.1",
+    "date-fns": "^4.1.0",
     "libphonenumber-js": "^1.11.9",
     "remixicon": "^4.3.0",
     "rxjs": "~7.8.0",

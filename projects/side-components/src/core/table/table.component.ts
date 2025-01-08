@@ -4,148 +4,101 @@ import {
   Component,
   inject,
   Input,
+  OnChanges,
   OnInit,
+  SimpleChanges,
   ViewChild
 } from '@angular/core';
-import {PaginationComponent} from "../pagination/pagination.component";
+import { PaginationComponent } from "../pagination/pagination.component";
 
 @Component({
   selector: 'sc-table',
   templateUrl: './table.component.html',
-  styleUrl: './table.component.css',
+  styleUrls: ['./table.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TableComponent implements OnInit{
+export class TableComponent implements OnInit, OnChanges {
+  @ViewChild('tablePaginate', { static: false }) paginate?: PaginationComponent;
 
-  @ViewChild('tablePaginate', {static: false}) paginate?: PaginationComponent;
   @Input() data: any[] = [];
-  @Input() fullScreen: boolean = false;
+  @Input() fullScreen = false;
   @Input() usePagination = false;
+  @Input() showPagination = false;
   @Input() border = false;
   @Input() rounded = false;
   @Input() shadow = false;
-  @Input() showPageLinks: boolean = true;
-  @Input() showPageOptions: boolean = true;
-  @Input() showCurrentPageInfo: boolean = false;
+  @Input() showPageLinks = true;
+  @Input() showPageOptions = true;
+  @Input() showCurrentPageInfo = false;
   @Input() currentPageInfoTemplate?: string;
   @Input() pageSizeOptions: number[] = [10, 20, 30, 40, 50];
-  @Input() paginationPosition : 'top-left' | 'top-right' | 'top-center' | 'bottom-center' | 'bottom-left' | 'bottom-right' = 'top-right';
+  @Input() paginationPosition: 'top-left' | 'top-right' | 'top-center' | 'bottom-center' | 'bottom-left' | 'bottom-right' = 'top-right';
+  @Input() currentPage = 1;
+  @Input() currentPageSize = 10;
+  @Input() totalPages = 0;
+
   cd = inject(ChangeDetectorRef);
   mainData: any[] = [];
-  image: any;
-  @Input() currentPage: number = 1;
-  @Input() currentPageSize: number = 10;
-  @Input() totalPages = 0;
   first = 0;
   last = 0;
 
-  calcPagination = () => {
-    if (this.usePagination) {
-      if (this.paginate) {
-        this.mainData = this.data.slice(this.paginate.first === 1 ? 0 : this.paginate.first, this.paginate.last > this.paginate.currentPageSize ? this.paginate.last + 1 : this.paginate.last);
-      }
+  ngOnInit(): void {
+    this.calcPagination();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.calcPagination();
+  }
+
+  calcPagination(): void {
+    if (this.usePagination && this.paginate) {
+      const { first, last, currentPageSize } = this.paginate;
+      this.first = first === 0 ? 1 : first;
+      this.last = last > currentPageSize ? last + 1 : currentPageSize;
+
+      this.mainData = this.data.slice(this.first - 1, this.last);
     } else {
-      this.mainData = this.data;
+      this.mainData = [...this.data];
+      this.first = 1;
+      this.last = this.mainData.length;
     }
     this.cd.detectChanges();
   }
 
-  pageNumberChangeEvent = (event: number) => {
+  pageNumberChangeEvent(event: number): void {
     this.currentPage = event;
     this.calcPagination();
   }
 
-  pageSizeChangeEvent = (event: number) => {
+  pageSizeChangeEvent(event: number): void {
     this.currentPageSize = event;
     this.calcPagination();
   }
 
-  sort(field: string, order: 'asc' | 'dsc' = 'asc') {
+  sort(field: string, order: 'asc' | 'dsc' = 'asc'): void {
+    const comparator = (a: any, b: any) => this.compareValues(a, b, field, order);
+    this.data.sort(comparator);
+    this.calcPagination();
+  }
 
-    let compareASC = (a: any, b: any) => {
-      let aValue;
-      let bValue;
+  sortNumber(field: string, order: 'asc' | 'dsc' = 'asc'): void {
+    const comparator = (a: any, b: any) => this.compareValues(a, b, field, order, true);
+    this.data.sort(comparator);
+    this.calcPagination();
+  }
 
-      if (field.includes('.')) {
-        aValue = this.getValue(a, field.split('.'));
-        bValue = this.getValue(b, field.split('.'));
+  private compareValues(a: any, b: any, field: string, order: 'asc' | 'dsc', isNumeric = false): number {
+    const aValue = this.getValue(a, field);
+    const bValue = this.getValue(b, field);
 
-        return aValue?.localeCompare(bValue);
-      } else {
-        return a[field].localeCompare(b[field])
-      }
-    }
-
-    let compareDSC = (a: any, b: any) => {
-      let aValue ;
-      let bValue;
-
-      if (field.includes('.')) {
-        aValue = this.getValue(a, field.split('.'));
-        bValue = this.getValue(b, field.split('.'));
-        return bValue?.localeCompare(aValue);
-      } else {
-        return b[field].localeCompare(a[field])
-      }
-    }
-
-    if (order === 'asc') {
-      this.data.sort(compareASC);
+    if (isNumeric) {
+      return order === 'asc' ? aValue - bValue : bValue - aValue;
     } else {
-      this.data.sort(compareDSC);
+      return order === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
     }
-    this.calcPagination();
   }
 
-  sortNumber(field: string, order: 'asc' | 'dsc' = 'asc') {
-
-    let compareASC = (a: any, b: any) => {
-      let aValue;
-      let bValue;
-
-      if (field.includes('.')) {
-        aValue = this.getValue(a, field.split('.'));
-        bValue = this.getValue(b, field.split('.'));
-        return parseFloat(aValue) - parseFloat(bValue);
-      } else {
-        return parseFloat(a[field]) - parseFloat(b[field]);
-      }
-    }
-
-    let compareDSC = (a: any, b: any) => {
-      let aValue ;
-      let bValue;
-
-      if (field.includes('.')) {
-        aValue = this.getValue(a, field.split('.'));
-        bValue = this.getValue(b, field.split('.'));
-        return parseFloat(bValue) - parseFloat(aValue);
-      } else {
-        return parseFloat(b[field]) - parseFloat(a[field]);
-      }
-    }
-
-    if (order === 'asc') {
-      this.data.sort(compareASC);
-    } else {
-      this.data.sort(compareDSC);
-    }
-    this.calcPagination();
-  }
-
-  getValue = (item: any ,value: any[]):any => {
-    let result;
-    for (let i = 0; i < value.length; i++) {
-      if (!result) {
-        result = item?.[value[i]]
-      } else {
-        result = result?.[value[i]]
-      }
-    }
-    return result;
-  }
-
-  ngOnInit(): void {
-    this.calcPagination();
+  private getValue(item: any, field: string): any {
+    return field.split('.').reduce((acc, key) => acc?.[key], item);
   }
 }

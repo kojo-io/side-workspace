@@ -32,7 +32,7 @@ export class NumberInputComponent implements OnInit, ControlValueAccessor {
   errorMessage: string | null = null;
 
   context: any;
-  onChange = (_: any) => {};
+  onChange = (_: number) => {};
   onTouched = (_?: any) => {
     this.touched = true;
   };
@@ -40,7 +40,7 @@ export class NumberInputComponent implements OnInit, ControlValueAccessor {
   ngOnInit(): void {
   }
 
-  registerOnChange(fn: (_: any) => void): void {
+  registerOnChange(fn: (_: number) => void): void {
     this.onChange = fn;
   }
 
@@ -53,15 +53,25 @@ export class NumberInputComponent implements OnInit, ControlValueAccessor {
   }
 
   writeValue(obj: any): void {
-    this.model = obj;
+    if (obj) {
+      this.model = obj;
+    } else {
+      this.model = 0;
+    }
   }
 
   increment() {
+    if (this.disabled || this.readOnly) {
+      return;
+    }
     this.model ++;
     this.checkValue(this.model);
   }
 
   decrement() {
+    if (this.disabled || this.readOnly) {
+      return;
+    }
     this.model --;
     this.checkValue(this.model);
   }
@@ -97,7 +107,16 @@ export class NumberInputComponent implements OnInit, ControlValueAccessor {
     // If no error message, the value is valid within the range
     if (!this.errorMessage) {
       this.invalid = false;
-      this.onChange(value);
     }
+    this.checkInvalid();
+    if (value) {
+      this.onChange(value);
+    } else {
+      this.onChange(0);
+    }
+  }
+
+  checkInvalid() {
+    this.invalid = this.required && this.model < 1;
   }
 }

@@ -1,18 +1,14 @@
 <div [id]="id"
-     class="modal fixed inset-0 z-[999] flex flex-wrap h-full w-full justify-center"
-     [ngClass]="{
-       'lg:content-center': center,
-       'lg:content-start pt-5': !center && height !== 'fill',
-       'lg:content-start py-5': !center && height === 'fill'
-     }">
+     class="modal fixed inset-0 z-[999] flex flex-col h-full w-full justify-center items-center">
 
   <!-- Apply Angular animation state trigger -->
   <div class="modal-content {{modalCss}}"
-       [ngClass]="{'h-full': modalSize === 'fullscreen'}"
+       [ngStyle]="{'height': modalSize !== 'fullscreen' ? height : ''}"
        [@modalState]="open ? 'open' : 'closed'">
 
     <!-- Content rendering based on contentType -->
-    <div class="bg-white" [ngClass]="{'h-full': modalSize === 'fullscreen', 'rounded-[8px]': rounded, 'shadow-sm': modalSize !== 'fullscreen'}" [ngStyle]="{'height': modalSize !== 'fullscreen' ? height : ''}">
+    <div class="bg-white h-full flex flex-col justify-center items-center overflow-auto"
+         [ngClass]="{'rounded-[8px]': rounded, 'shadow-sm': modalSize !== 'fullscreen'}">
       @switch (contentType) {
         @case ('string') {
           <div [innerHTML]="content"></div>

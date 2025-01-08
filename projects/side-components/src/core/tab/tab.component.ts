@@ -105,7 +105,7 @@ export class TabComponent implements OnInit, AfterContentInit , ControlValueAcce
   }
 
   writeValue(obj: any): void {
-    if (obj) {
+    if (obj || obj > -1) {
       this.selected = obj;
       timer( this.contentInitialized ? 0 : 300).subscribe({
         next: _ => {

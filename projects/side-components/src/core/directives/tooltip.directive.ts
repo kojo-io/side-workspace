@@ -68,4 +68,9 @@ export class TooltipDirective{
   onMouseLeave() {
     document.body.removeChild(this.element);
   }
+
+  @HostListener('click', ['$event'])
+  onClick() {
+    document.body.removeChild(this.element);
+  }
 }

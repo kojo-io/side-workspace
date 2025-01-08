@@ -130,10 +130,13 @@ export class PaginationComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
-    this.selectPage(1);
+    this.currentPage = 1;
+    this.calcPagination();
+    this.cd.detectChanges();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.calcPagination();
+    this.cd.detectChanges();
   }
 }

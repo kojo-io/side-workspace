@@ -1,12 +1,13 @@
 {
   "name": "side-components",
-  "version": "0.0.49",
+  "version": "0.1.8",
   "peerDependencies": {
     "@angular/cdk": "^18.2.0",
     "@angular/common": "^18.2.0",
     "@angular/core": "^18.2.0",
     "scss-bundle": "^3.1.2",
-    "libphonenumber-js": "^1.11.9"
+    "libphonenumber-js": "^1.11.9",
+    "date-fns": "^4.1.0"
   },
   "dependencies": {
     "tslib": "^2.3.0"

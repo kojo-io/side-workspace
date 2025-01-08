@@ -28,7 +28,9 @@
       <sc-select-option
         *ngFor="let item of pageSizeOptions"
         [value]="item" label="{{item}}"
-        [selected]="currentPageSize === item"/>
+        [selected]="currentPageSize === item">
+        {{item}}
+      </sc-select-option>
     </sc-select>
   }
 </div>
