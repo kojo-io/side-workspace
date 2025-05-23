@@ -28,6 +28,7 @@ export class DatePickerComponent implements OnInit, ControlValueAccessor {
   @Input() invalid: boolean = false;
   @Input() touched: boolean = false;
   @Input() showArrow: boolean = false;
+  @Input() mode : 'date' | 'month' | 'year' = 'date';
   @Input() dateFormat: string = 'MM/dd/yyyy'; // Default format; can be customized
   focused: boolean = false;
   selectedDate: Date = new Date();
@@ -40,6 +41,12 @@ export class DatePickerComponent implements OnInit, ControlValueAccessor {
   id = ComponentService.uuid();
 
   ngOnInit(): void {
+    if(this.mode == 'month') {
+      this.dateFormat = 'MMMM yyyy';
+    }
+    if(this.mode == 'year') {
+      this.dateFormat = 'yyyy';
+    }
     this.model = format(this.selectedDate, this.dateFormat);
     this.onChange(this.selectedDate);
   }

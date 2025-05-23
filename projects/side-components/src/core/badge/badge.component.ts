@@ -7,6 +7,8 @@ import {Component, Input} from '@angular/core';
 })
 export class BadgeComponent {
   @Input() counter = 0;
+  @Input() rightPosition = -4;
+  @Input() topPosition = -6;
   @Input() color = 'white';
   @Input() backgroundColor = 'red';
   @Input() flex: '' | 'normal' | undefined = undefined;

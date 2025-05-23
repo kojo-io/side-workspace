@@ -35,6 +35,7 @@ export class ModalComponent implements OnInit, AfterViewInit, OnDestroy {
   width: 'auto' | 'custom' | undefined = 'auto';
   center = true;
   rounded = true;
+  backgroundColor = '';
 
   // Private subject to handle component unsubscriptions
   private destroy$ = new Subject<void>();
@@ -81,6 +82,8 @@ export class ModalComponent implements OnInit, AfterViewInit, OnDestroy {
     this.height = modal.height ?? 'h-auto';
     this.rounded = modal.rounded ?? true;
     this.width = modal.width ?? 'auto';
+    this.backgroundColor = modal.backgroundColor ?? 'white';
+
   }
 
   /**
@@ -107,6 +110,7 @@ export class ModalComponent implements OnInit, AfterViewInit, OnDestroy {
       case 'large':
         return 'w-full lg:w-11/12';
       case 'normal':
+        return 'w-auto'
       default:
         return this.width == "auto" ? 'w-full lg:w-[544px]' : 'w-full lg:w-auto';
     }

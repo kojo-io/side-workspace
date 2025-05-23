@@ -10,4 +10,5 @@ export class Modal<T = any> {
   center?: boolean | undefined;
   backdropClose?: boolean | undefined;
   rounded?: boolean | undefined;
+  backgroundColor?: string;
 }

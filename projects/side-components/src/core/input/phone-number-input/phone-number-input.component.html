@@ -34,7 +34,7 @@
 </div>
 
 <div #menuElement DropDownItem class="py-[4px]">
-  <div class="border border-gray-100 rounded-lg min-w-[420px] max-h-[500px] flex flex-col divide-y bg-white shadow overflow-auto">
+  <div class="border border-gray-100 rounded-lg min-w-[420px] max-h-[300px] flex flex-col divide-y bg-white shadow overflow-auto">
     <div class="px-[8px] py-[6px] bg-gray-100 border border-gray-100" (click)="$event.stopImmediatePropagation()">
       <sc-input inputGroup [prefixTemplate]="search" name="search" [placeholder]="'Search'" [(ngModel)]="searchValue" (ngModelChange)="filterCountries($event)"></sc-input>
       <ng-template #search>

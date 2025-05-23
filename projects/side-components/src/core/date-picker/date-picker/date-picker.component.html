@@ -32,6 +32,6 @@
 </div>
 <div #menuElement class="absolute z-10 dropdown-menu-list hidden py-[4px]">
   <div class="border border-gray-100 rounded-lg max-w-max max-h-[500px] flex flex-col divide-y bg-white shadow overflow-auto">
-    <sc-calendar-mini (click)="$event.stopImmediatePropagation()" [(ngModel)]="selectedDate" (ngModelChange)="dateSelectChange(menuElement)"/>
+    <sc-calendar-mini (click)="$event.stopImmediatePropagation()" [(ngModel)]="selectedDate" [dateView]="mode" (ngModelChange)="dateSelectChange(menuElement)"/>
   </div>
 </div>

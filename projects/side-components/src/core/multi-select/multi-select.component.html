@@ -16,21 +16,18 @@
       <ng-container *ngTemplateOutlet="$any(prefixTemplate); context: context"></ng-container>
     </div>
   }
-  <input (blur)="onBlur()" (focus)="onFocus()" [readOnly]="true"
-         class="bg-transparent absolute h-full inset-0 outline-0 border-transparent cursor-pointer" />
-
-  <div class="flex-grow outline-0 disabled:bg-[#F9FAFB] disabled:cursor-not-allowed overflow-hidden mr-[4px] px-[8px]">
-    <ng-container *ngIf="selectedItems.length > 0; else placeholderContent">
-      <div class="w-full overflow-x-auto flex space-x-[4px] custom-scrollbar">
-        <div class="h-full px-[4px] bg-gray-300 text-[12px] max-w-max rounded flex space-x-[4px] items-center" *ngFor="let selected of selectedItems; let i = index">
-          <span>{{selected.label}}</span>
-          <i class="ri-close-line leading-none z-[1]" (click)="$event.stopImmediatePropagation(); removeItem(i)"></i>
+  <input (blur)="onBlur()" (focus)="onFocus()" [readOnly]="true" class="bg-transparent absolute h-full inset-0 outline-0 border-transparent cursor-pointer" />
+  <div class="flex-grow mr-[4px] px-[8px] h-full overflow-hidden z-[0]">
+    @if (selectedItems.length > 0) {
+      <div class="flex items-stretch overflow-x-auto gap-[4px] h-full" style="scrollbar-width: none;">
+        <div *ngFor="let selected of selectedItems; let i = index" class="flex items-center gap-[4px] max-h-max text-[12px] bg-gray-300 rounded px-[2px]">
+          <span class="truncate max-w-max">{{ selected.label }}</span>
+          <i class="ri-close-line leading-none cursor-pointer" (click)="$event.stopImmediatePropagation(); removeItem(i)"></i>
         </div>
       </div>
-    </ng-container>
-    <ng-template #placeholderContent>
-      {{placeholder}}
-    </ng-template>
+    } @else {
+      <span class="text-gray-400 text-sm truncate block">{{ placeholder }}</span>
+    }
   </div>
   <div class="max-w-max flex items-center">
     <ng-container *ngIf="selectedItems.length > 0 && allowClear">

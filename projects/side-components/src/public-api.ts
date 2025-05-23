@@ -33,6 +33,12 @@ export * from './core/directives/directives.module'
 export * from './core/directives/drop-down-item.directive'
 
 /*
+* break point directives
+* */
+export * from './core/directives/break-point'
+export * from './core/directives/break-point.directive'
+
+/*
 * modal component
 * */
 export * from './core/modal/modal-ref'

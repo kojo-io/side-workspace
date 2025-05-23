@@ -1,6 +1,6 @@
 {
   "name": "side-components",
-  "version": "0.1.8",
+  "version": "0.1.44",
   "peerDependencies": {
     "@angular/cdk": "^18.2.0",
     "@angular/common": "^18.2.0",

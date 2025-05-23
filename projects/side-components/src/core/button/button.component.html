@@ -7,8 +7,9 @@
        'border-[1px] shadow-sm': variant !== 'ghost',
        'bg-white text-[#545D69]': variant === 'ghost',
        'w-full': block === '',
-       'text-white': variant === 'destructive' || variant === 'primary',
+       'text-white': variant === 'destructive' || variant === 'primary' || variant === 'dark',
        'border-red-500 bg-red-500 hover:bg-red-600': variant === 'destructive',
+       'border-black bg-black hover:bg-black': variant === 'dark'
        }">
   @if(loading) {
     <div class="animate-spin">

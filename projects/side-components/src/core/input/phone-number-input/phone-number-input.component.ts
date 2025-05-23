@@ -68,15 +68,6 @@ export class PhoneNumberInputComponent implements OnInit, ControlValueAccessor {
     this.disabled = isDisabled;
   }
 
-  // writeValue(obj: any): void {
-  //   if (obj) {
-  //     this.onInput(this.service.getNationalFormat(obj));
-  //   }
-  //   if (obj === '') {
-  //     this.model = '';
-  //   }
-  // }
-
   writeValue(obj: any): void {
     if (obj === null || obj === '') {
       // Clear the internal states
@@ -84,6 +75,7 @@ export class PhoneNumberInputComponent implements OnInit, ControlValueAccessor {
       this.rawPhoneNumber = '';
       this.formattedValue = '';
     } else {
+      this.selectedCountry = this.countryCode.countries.find(item => item.dialCode === this.service.getCode(obj));
       this.onInput(this.service.getNationalFormat(obj));
     }
 
@@ -114,14 +106,16 @@ export class PhoneNumberInputComponent implements OnInit, ControlValueAccessor {
     this.rawPhoneNumber = value.replace(/\D/g, '');
 
     // Limit the number of digits to 10
-    if (this.rawPhoneNumber.length > 10) {
-      this.rawPhoneNumber = this.rawPhoneNumber.slice(0, 10);
+    if (this.rawPhoneNumber.length > 11) {
+      this.rawPhoneNumber = this.rawPhoneNumber.slice(0, 11);
     }
 
     if (this.rawPhoneNumber.length  === 0) {
       this.model = '';
       this.touched = true;
     }
+
+    console.log('raw',this.rawPhoneNumber, this.formattedValue);
 
     // Format the raw phone number for display
     this.model = this.service.formatPhoneNumber(this.rawPhoneNumber);
@@ -130,25 +124,23 @@ export class PhoneNumberInputComponent implements OnInit, ControlValueAccessor {
     this.phoneNumberToReturn();
   }
 
-  // Restrict input to numbers only and prevent input if length is 10 or more
+  // Restrict input to numbers only and prevent input if length is 11 or more
   onKeyDown(event: KeyboardEvent): boolean {
-    const allowedKeys = [
-      'Backspace', 'ArrowLeft', 'ArrowRight', 'Delete', 'Tab'
-    ];
+    const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Delete', 'Tab'];
 
-    // If rawPhoneNumber length is 10 and a new number is pressed, prevent the input
+    // If rawPhoneNumber length is 11 and a new number is pressed, prevent input
     if (
-      this.rawPhoneNumber.length >= 10 &&
-      !(allowedKeys.indexOf(event.key) !== -1) // Allow control keys like Backspace, Arrow keys, etc.
+      this.rawPhoneNumber.length >= 11 &&
+      !(allowedKeys.includes(event.key)) // Allow control keys like Backspace, Arrow keys, etc.
     ) {
-      event.preventDefault(); // Block any further numeric input
+      event.preventDefault(); // Block further numeric input
       return false;
     }
 
     // Allow control keys and numeric keys only
     if (
-      allowedKeys.indexOf(event.key) !== -1 || // Check if it's a control key
-      (event.key >= '0' && event.key <= '9') // Allow numeric keys
+      allowedKeys.includes(event.key) || // Check if it's a control key
+      /^[0-9]$/.test(event.key) // Allow numeric keys using regex
     ) {
       return true;
     }
@@ -159,8 +151,9 @@ export class PhoneNumberInputComponent implements OnInit, ControlValueAccessor {
   }
 
   phoneNumberToReturn() {
-    if (this.rawPhoneNumber.length === 10) {
+    if (this.rawPhoneNumber.length === 10 || this.rawPhoneNumber.length === 11) {
       const phone = parsePhoneNumber(this.formattedValue, this.selectedCountry.isoAlpha2);
+
       // Notify Angular with the raw number
       if (this.dataType === 'FullObject') {
         this.onChange(phone);

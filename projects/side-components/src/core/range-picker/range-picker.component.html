@@ -1,0 +1,22 @@
+<div class="relative w-full max-w-md mx-auto">
+  <!-- Track -->
+  <div #rangeTrack class="absolute top-1/2 left-0 right-0 h-2 bg-gray-300 rounded-full transform -translate-y-1/2"></div>
+
+  <!-- Selected Range -->
+  <div class="absolute top-1/2 h-2 bg-blue-500 rounded-full transform -translate-y-1/2"
+       [style.left]="getPercentage('min')"
+       [style.right]="'calc(100% - ' + getPercentage('max') + ')'">
+  </div>
+
+  <!-- Min Thumb -->
+  <div class="absolute top-1/2 w-6 h-6 bg-blue-500 rounded-full border-2 border-white shadow-md transform -translate-x-1/2 -translate-y-1/2 cursor-pointer"
+       [style.left]="getPercentage('min')"
+       (mousedown)="onMouseDown('min', $event)">
+  </div>
+
+  <!-- Max Thumb -->
+  <div class="absolute top-1/2 w-6 h-6 bg-blue-500 rounded-full border-2 border-white shadow-md transform -translate-x-1/2 -translate-y-1/2 cursor-pointer"
+       [style.left]="getPercentage('max')"
+       (mousedown)="onMouseDown('max', $event)">
+  </div>
+</div>

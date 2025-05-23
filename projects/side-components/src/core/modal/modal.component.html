@@ -7,8 +7,8 @@
        [@modalState]="open ? 'open' : 'closed'">
 
     <!-- Content rendering based on contentType -->
-    <div class="bg-white h-full flex flex-col justify-center items-center overflow-auto"
-         [ngClass]="{'rounded-[8px]': rounded, 'shadow-sm': modalSize !== 'fullscreen'}">
+    <div class="h-full flex flex-col"
+         [ngClass]="{'rounded-[8px]': rounded, 'justify-center items-center': height === ''}" [ngStyle]="{backgroundColor: backgroundColor}">
       @switch (contentType) {
         @case ('string') {
           <div [innerHTML]="content"></div>

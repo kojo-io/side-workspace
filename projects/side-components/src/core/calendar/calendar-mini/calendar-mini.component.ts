@@ -28,7 +28,7 @@ export class CalendarMiniComponent implements OnInit, AfterViewInit, ControlValu
   date: Date = new Date();
   smallCalendarView: 'month' | 'all month' | 'year' = 'month';
   @Input() mode: 'single' | 'range' = 'single';
-  @Input() dateView : 'month' | 'date' = 'date';
+  @Input() dateView : 'month' | 'date' | 'year' = 'date';
   @Input() showSelectedDate = true;
   @Input() selection = false;
   @Output() onSelectionChange = new EventEmitter<boolean>();
@@ -87,6 +87,9 @@ export class CalendarMiniComponent implements OnInit, AfterViewInit, ControlValu
     if(this.dateView === 'month') {
       this.smallCalendarView = 'all month';
     }
+    if(this.dateView === 'year') {
+      this.smallCalendarView = 'year';
+    }
     this.selectedYear = this.date.getFullYear();
     this.years = Array.from({ length: 12 }, (_, i) => 2016 + i);
     this.GetCalendar(this.date.getFullYear(), this.date.getMonth());
@@ -141,6 +144,9 @@ export class CalendarMiniComponent implements OnInit, AfterViewInit, ControlValu
     this.selection = false;
     this.onSelectionChange.emit(false);
     this.onMonthYearChange.emit(this.currentDate);
+    if (this.dateView === 'month') {
+      this.onChange(this.currentDate);
+    }
   }
 
   selectYear(year: number) {
@@ -149,6 +155,9 @@ export class CalendarMiniComponent implements OnInit, AfterViewInit, ControlValu
       this.selection = false;
       this.onSelectionChange.emit(false);
       this.onMonthYearChange.emit(this.currentDate);
+      if(this.dateView === 'year') {
+        this.onChange(this.currentDate);
+      }
     }
   }
 
@@ -269,9 +278,13 @@ export class CalendarMiniComponent implements OnInit, AfterViewInit, ControlValu
   updateView(view: any) {
     if(this.dateView === 'month') {
       this.smallCalendarView = 'all month';
-    } else {
-      this.smallCalendarView = view;
+      return;
     }
+    if(this.dateView === 'year') {
+      this.smallCalendarView = 'year';
+      return;
+    }
+    this.smallCalendarView = view;
   }
 
   writeValue(obj: Date): void {

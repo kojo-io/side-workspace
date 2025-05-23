@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import {DropDownDirective} from "./drop-down.directive";
 import { TooltipDirective } from './tooltip.directive';
 import {DropDownItemDirective} from "./drop-down-item.directive";
+import {BreakpointDirective} from "./break-point.directive";
 
 
 
@@ -10,12 +11,14 @@ import {DropDownItemDirective} from "./drop-down-item.directive";
   declarations: [
     DropDownDirective,
     TooltipDirective,
-    DropDownItemDirective
+    DropDownItemDirective,
+    BreakpointDirective
   ],
   exports: [
     DropDownDirective,
     TooltipDirective,
-    DropDownItemDirective
+    DropDownItemDirective,
+    BreakpointDirective
   ],
   imports: [
     CommonModule

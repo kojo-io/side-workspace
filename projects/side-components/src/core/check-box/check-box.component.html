@@ -7,6 +7,7 @@
       'bg-gray-100 border-gray-300': !checked && !indeterminate
     }"
   >
+    <div class="inset-0 z-[1] absolute" *ngIf="disabled"></div>
     <!-- Hidden Native Checkbox -->
     <input
       type="checkbox"

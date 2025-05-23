@@ -8,7 +8,7 @@ import {Component, Input, TemplateRef} from '@angular/core';
 export class ButtonComponent {
   @Input() suffixIcon?: TemplateRef<any>;
   @Input() prefixIcon?: TemplateRef<any>;
-  @Input() variant: 'primary' | 'secondary' | 'light' | 'ghost' | 'destructive' = 'primary';
+  @Input() variant: 'primary' | 'secondary' | 'light' | 'ghost' | 'destructive' | 'dark' = 'primary';
   @Input() block: '' | undefined = undefined;
   @Input() loading = false;
   @Input() disabled = false;
